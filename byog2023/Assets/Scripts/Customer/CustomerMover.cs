@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class CustomerMover : MonoBehaviour
@@ -9,17 +10,31 @@ public class CustomerMover : MonoBehaviour
     [SerializeField] private float moveSpeed = 50f;
     [SerializeField] private float rotationDuration = 0.2f;
     
-    [SerializeField] private Transform doorTransform;
-    [SerializeField] private Transform counterTransform;
-
-    public Action OnReached;
+    [SerializeField] private UnityEvent OnCounterReach;
+    
+    private Transform startTransform;
+    private Transform doorTransform;
+    private Transform counterTransform;
+    
+    public Action OnExitReached;
 
     private void Start()
     {
-         StartCoroutine(Move());
+        transform.SetPositionAndRotation(startTransform.position, startTransform.rotation);
+        
+        // TODO: Subscribe for exit.
+        
+         StartCoroutine(MoveToCounter());
     }
 
-    private IEnumerator Move()
+    public void Init(in Transform startTransform, Transform doorTransform, Transform counterTransform)
+    {
+        this.startTransform = startTransform;
+        this.doorTransform = doorTransform;
+        this.counterTransform = counterTransform;
+    }
+
+    private IEnumerator MoveToCounter()
     {
         // Move to door.
         yield return MoveToLocation(doorTransform);
@@ -28,12 +43,29 @@ public class CustomerMover : MonoBehaviour
         transform.LookAt(counterTransform);
         
         // Wait.
-        yield return StartCoroutine(LookAtCounter());
+        yield return StartCoroutine(Look(counterTransform));
         
         // Move to counter.
         yield return MoveToLocation(counterTransform);
         
-        OnReached?.Invoke();
+        OnCounterReach?.Invoke();
+    }
+    
+    private IEnumerator MoveToExit()
+    {
+        // Move to door.
+        yield return MoveToLocation(doorTransform);
+
+        // Look towards exit.
+        transform.LookAt(counterTransform);
+        
+        // Wait.
+        yield return StartCoroutine(Look(startTransform));
+        
+        // Move to exit.
+        yield return MoveToLocation(startTransform);
+        
+        OnExitReached?.Invoke();
     }
 
     private IEnumerator MoveToLocation(Transform destination)
@@ -55,10 +87,10 @@ public class CustomerMover : MonoBehaviour
         }
     }
 
-    private IEnumerator LookAtCounter()
+    private IEnumerator Look(Transform target)
     {
         // Calculate the direction vector from this object to the target.
-        Vector3 direction = counterTransform.position - transform.position;
+        Vector3 direction = target.position - transform.position;
 
         // Calculate the rotation needed to look at the target.
         Quaternion targetRotation = Quaternion.LookRotation(direction);

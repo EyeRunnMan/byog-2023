@@ -27,7 +27,7 @@ public class CustomerOrderState : MonoBehaviour
     }
 
     [ContextMenu("StartTimer")]
-    private void StartWaitTimer()
+    public void StartWaitTimer()
     {
         currentWaitTime = 0;
         OnTimerStart?.Invoke();
