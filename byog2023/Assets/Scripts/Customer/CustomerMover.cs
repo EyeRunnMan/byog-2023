@@ -22,9 +22,7 @@ public class CustomerMover : MonoBehaviour
     {
         transform.SetPositionAndRotation(startTransform.position, startTransform.rotation);
         
-        // TODO: Subscribe for exit.
-        
-         StartCoroutine(MoveToCounter());
+        StartCoroutine(MoveToCounter());
     }
 
     public void Init(in Transform startTransform, Transform doorTransform, Transform counterTransform)
@@ -49,6 +47,11 @@ public class CustomerMover : MonoBehaviour
         yield return MoveToLocation(counterTransform);
         
         OnCounterReach?.Invoke();
+    }
+
+    public void MoveToExitWrapper()
+    {
+        StartCoroutine(MoveToExit());
     }
     
     private IEnumerator MoveToExit()

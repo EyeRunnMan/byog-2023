@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 3029963055723808790}
   - component: {fileID: 6953805540233171558}
   - component: {fileID: 3709941574169638864}
+  - component: {fileID: 3655665584521990143}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -205,23 +206,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   rotationDuration: 0.5
-  doorTransform: {fileID: 0}
-  counterTransform: {fileID: 0}
-  OnReached:
+  OnCounterReach:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3709941574169638864}
-        m_TargetAssemblyTypeName: CustomerOrderState, Assembly-CSharp
-        m_MethodName: StartWaitTimer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &3709941574169638864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,3 +236,30 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   IsLifeCycelEnded: 0
+--- !u!114 &3655665584521990143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869568728130182525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 080a930d947511e408ef0b87eb049df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTransactionComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6953805540233171558}
+        m_TargetAssemblyTypeName: CustomerMover, Assembly-CSharp
+        m_MethodName: MoveToExitWrapper
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
